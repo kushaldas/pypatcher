@@ -16,9 +16,10 @@ def get_latest_patch(bugid):
     data = rserver.display('issue%s' % bugid)
     if len(data['files']) > 0:
         patchid = data['files'][-1]
-    os.system('wget http://bugs.python.org/file%s/' % patchid)
+    url = 'http://bugs.python.org/file%s/' % patchid
+    os.system('wget %s' % url)
     os.system('mv index.html new_patch.patch')
-    print("Received the patch.")
+    print("Downloaded the patch from %s" % url)
 
 if __name__ == '__main__':
     get_latest_patch(sys.argv[1])
