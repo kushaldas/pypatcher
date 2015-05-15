@@ -23,6 +23,7 @@ class LogBot(irc.IRCClient):
         self.logger = None
         self.q = Queue('bug-messages')
         self.q.connect()
+        self.channel_admin = ['kushal',]
 
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)
@@ -44,6 +45,20 @@ class LogBot(irc.IRCClient):
             print '[[%s]]' % msg
             task = Task(msg)
             self.q.enqueue(task)
+        user_cond = user in self.channel_admin
+        if msg == '#masters' and user_cond:
+            self.msg(self.chn, "My current masters are: %s" % ",".join(self.channel_admin))
+        if msg.startswith('#add:') and user_cond:
+            try:
+                name = msg.split()[1]
+                print name
+                self.channel_admin.append(name)
+                self.msg(self.chn,'%s is a master now.' % name)
+            except Exception, err:
+                print err
+        if msg.startswith('#test:') and user_cond:
+            bugid = msg.split()[1]
+            print bugid
 
 
     # For fun, override the method that determines how a nickname is changed on
