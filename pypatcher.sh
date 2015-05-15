@@ -25,7 +25,7 @@ then
     echo "Make failed."
     exit 1
 fi
-./python -m test -j0
+./python -m  test -w -j0
 if [ $? -ne 0 ]
 then
     echo "Tests failed."
