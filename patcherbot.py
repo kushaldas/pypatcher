@@ -58,8 +58,9 @@ class LogBot(irc.IRCClient):
                 print err
         if msg.startswith('#test:') and user_cond:
             bugid = msg.split()[1]
-            print bugid
-
+            msg = 'dummy/issue%s' % bugid
+            task = Task(msg)
+            self.q.enqueue(task)
 
     # For fun, override the method that determines how a nickname is changed on
     # collisions. The default method appends an underscore.
